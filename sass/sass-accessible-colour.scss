@@ -1,0 +1,39 @@
+@import 'contrast-checker.scss';
+
+@debug 10em + 12em;
+
+@function a11ycolor($foreground, $background, $ratio){
+  $currentRatio: uikit-color-contrast( $foreground, $background );
+  $pass: '';
+  $result: '';
+
+  @debug $currentRatio;
+  
+  @if  $currentRatio >= $ratio  {
+    @return $foreground;
+  } @else {
+    @while $currentRatio < $ratio {
+      $h: hue($foreground); // Gets the hue component of a color.
+      $s: saturation($foreground); //Gets the saturation component of a color.
+      $l: lightness($foreground); // Gets the lightness component of a color
+      $x: $l - 1;
+      $foreground: hsl($h, $s, $x);
+      @return a11ycolor($foreground, $background, $ratio);
+    }
+  }
+}
+
+// ===============================
+// ===============================
+// ===============================
+$text: silver;
+$bg: #FFF;
+
+body {
+  color:  a11ycolor($text, $bg, 3.1);
+  background-color: $bg;
+}
+
+p:after{
+  content: a11ycolor($text, $bg, 3.1);
+}

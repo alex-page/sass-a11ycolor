@@ -1,0 +1,52 @@
+{
+  "name": "sass-accessible-colour",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "npm run build:css && onchange sass/*.scss -- build:css",
+    "build:css": "node-sass sass/sass-accessible-colour.scss style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-page/sass-accessible-colour.git"
+  },
+  "keywords": [
+    "sass",
+    "accessible",
+    "colour",
+    "color"
+  ],
+  "author": {
+    "name": "Commonwealth of Australia, DTA",
+    "email": "guides@digital.gov.au",
+    "url": "https://www.dta.gov.au/"
+  },
+  "contributors": [
+    {
+			"name": "Dominik Wilkowski",
+			"email": "hi@dominik-wilkowski.com",
+			"url": "https://dominik-wilkowski.com/"
+		},
+    {
+      "name": "Trevor Brennan",
+      "email": "t@trevorbrennan.com",
+      "url": "http://trevorbrennan.com/"
+    },
+    {
+      "name": "Alex Page",
+      "email": "alex@alexpage.com.au",
+      "url": "http://alexpage.com.au"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alex-page/sass-accessible-colour/issues"
+  },
+  "homepage": "https://github.com/alex-page/sass-accessible-colour#readme",
+  "dependencies": {
+    "node-sass": "^4.5.3"
+  },
+  "devDependencies": {
+    "onchange": "^3.2.1"
+  }
+}
