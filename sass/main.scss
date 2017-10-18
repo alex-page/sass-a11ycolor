@@ -27,10 +27,14 @@ $text: silver;
 $bg: #FFF;
 
 body {
-  color:  a11ycolor($text, $bg, 3.1);
   background-color: $bg;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-p:after{
-  content: a11ycolor($text, $bg, 3.1);
+h1:first-of-type {
+  color: $text;
+}
+
+h1 {
+  color: a11ycolor($text, $bg, 3.1);
 }
