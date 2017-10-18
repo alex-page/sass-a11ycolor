@@ -1,13 +1,9 @@
 @import 'contrast-checker.scss';
 
-@debug 10em + 12em;
-
 @function a11ycolor($foreground, $background, $ratio){
   $currentRatio: uikit-color-contrast( $foreground, $background );
   $pass: '';
   $result: '';
-
-  @debug $currentRatio;
   
   @if  $currentRatio >= $ratio  {
     @return $foreground;
@@ -22,6 +18,7 @@
     }
   }
 }
+
 
 // ===============================
 // ===============================

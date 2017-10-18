@@ -201,10 +201,6 @@
 
 	$ratio: round( $ratio * 10 ) / 10;
 
-	@if( $ratio < 4.5 ) {
-		@warn "Houston, we have a problem; contrast ratio of #{ $forground } on #{ $background } is bad, just #{ $ratio }";
-	}
-
 	@return $ratio;
 }
 

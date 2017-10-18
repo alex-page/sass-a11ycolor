@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "style.css",
+	"sources": [
+		"../sass/main.scss",
+		"../sass/contrast-checker.scss"
+	],
+	"names": [],
+	"mappings": "AA4BA,AAAA,IAAI,AAAC,CACH,KAAK,CAdY,OAAe,CAehC,gBAAgB,CAJb,IAAI,CAKR,AAED,AAAA,CAAC,AAAA,MAAM,AAAA,CACL,OAAO,CAnBU,OAAe,CAoBjC"
+}

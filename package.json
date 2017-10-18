@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "watch": "npm run build:css && onchange sass/*.scss -- build:css",
-    "build:css": "node-sass sass/sass-accessible-colour.scss style.css"
+    "watch": "node-sass -w --source-map true --output-style compressed sass/main.scss css/style.css",
+    "build": "node-sass --source-map true --output-style compressed sass/main.scss css/style.css"
   },
   "repository": {
     "type": "git",
@@ -45,8 +45,5 @@
   "homepage": "https://github.com/alex-page/sass-accessible-colour#readme",
   "dependencies": {
     "node-sass": "^4.5.3"
-  },
-  "devDependencies": {
-    "onchange": "^3.2.1"
   }
 }
