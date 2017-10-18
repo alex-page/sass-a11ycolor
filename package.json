@@ -1,14 +1,16 @@
 {
-  "name": "sass-accessible-colour",
+  "name": "sass-a11ycolor",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "watch": "node-sass -w --source-map true --output-style compressed sass/main.scss css/style.css",
+    "watch": "npm run watch:css | npm run watch:site",
+    "watch:site": "browser-sync start --server --files \"css/*.css\" \"*.html\"",
+    "watch:css": "node-sass -w --source-map true --output-style compressed sass/main.scss css/style.css",
     "build": "node-sass --source-map true --output-style compressed sass/main.scss css/style.css"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alex-page/sass-accessible-colour.git"
+    "url": "git+https://github.com/alex-page/sass-a11ycolor.git"
   },
   "keywords": [
     "sass",
@@ -23,10 +25,10 @@
   },
   "contributors": [
     {
-			"name": "Dominik Wilkowski",
-			"email": "hi@dominik-wilkowski.com",
-			"url": "https://dominik-wilkowski.com/"
-		},
+      "name": "Dominik Wilkowski",
+      "email": "hi@dominik-wilkowski.com",
+      "url": "https://dominik-wilkowski.com/"
+    },
     {
       "name": "Trevor Brennan",
       "email": "t@trevorbrennan.com",
@@ -40,10 +42,13 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alex-page/sass-accessible-colour/issues"
+    "url": "https://github.com/alex-page/sass-a11ycolor/issues"
   },
-  "homepage": "https://github.com/alex-page/sass-accessible-colour#readme",
+  "homepage": "https://github.com/alex-page/sass-a11ycolor#readme",
   "dependencies": {
     "node-sass": "^4.5.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.13"
   }
 }
