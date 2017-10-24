@@ -1,23 +1,40 @@
 @import 'contrast-checker.scss';
 
-@function a11ycolor($foreground, $background, $ratio){
-  $currentRatio: uikit-color-contrast( $foreground, $background );
-  $pass: '';
-  $result: '';
-  
-  @if  $currentRatio >= $ratio  {
-    @return $foreground;
-  } @else {
-    @while $currentRatio < $ratio {
-      $h: hue($foreground); // Gets the hue component of a color.
-      $s: saturation($foreground); //Gets the saturation component of a color.
-      $l: lightness($foreground); // Gets the lightness component of a color
-      $x: $l - 1;
-      $foreground: hsl($h, $s, $x);
-      @return a11ycolor($foreground, $background, $ratio);
-    }
-  }
+@function a11ycolor( $foreground, $background, $ratio, $i: 0 ){
+
+	$currentRatio: uikit-color-contrast( $foreground, $background );
+
+	@if $currentRatio < $ratio {
+
+		$i: $i + 1;
+		
+		$hue: hue($foreground);
+		$saturation: saturation($foreground);
+		$lightness: lightness($foreground);
+
+		
+		$lighter: $lightness + $i;
+		$colorLighter: hsl( $hue, $saturation, $lighter );
+		$currentLighter: uikit-color-contrast( $colorLighter, $background );
+		@if $currentLighter >= $ratio {
+			@return a11ycolor( $colorLighter, $background, $ratio, $i );
+		}
+
+		$darker: $lightness - $i;
+		$colorDarker: hsl( $hue, $saturation, $darker );
+		$currentDarker: uikit-color-contrast( $colorDarker, $background );
+		@if $currentDarker >= $ratio {
+			@return a11ycolor( $colorDarker, $background, $ratio, $i );
+		}
+
+		@return a11ycolor( $foreground, $background, $ratio, $i );
+		
+	}
+	@else {
+		@return $foreground;
+	}
 }
+
 
 
 // Normal css
@@ -26,7 +43,7 @@ $text: $toMakeA11y;
 $bg: #FFF;
 
 // Run the a11y function
-$textA11y: a11ycolor($text, $bg, 3.1);
+$textA11y: a11ycolor( $text, $bg, 3.1 );
 
 body {
   background-color: $bg;
