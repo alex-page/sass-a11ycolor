@@ -199,8 +199,6 @@
 		$ratio: 1 / $ratio;
 	}
 
-	$ratio: round( $ratio * 10 ) / 10;
-
 	@return $ratio;
 }
 

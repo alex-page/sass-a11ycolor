@@ -6,7 +6,7 @@
 
 	@if $currentRatio < $ratio {
 
-		$i: $i + 1;
+		$i: $i + .1;
 		
 		$hue: hue($foreground);
 		$saturation: saturation($foreground);
@@ -23,6 +23,7 @@
 		$darker: $lightness - $i;
 		$colorDarker: hsl( $hue, $saturation, $darker );
 		$currentDarker: uikit-color-contrast( $colorDarker, $background );
+		@debug $currentDarker;
 		@if $currentDarker >= $ratio {
 			@return a11ycolor( $colorDarker, $background, $ratio, $i );
 		}
@@ -36,14 +37,13 @@
 }
 
 
-
 // Normal css
-$toMakeA11y: pink;
+$toMakeA11y: #B38300;
 $text: $toMakeA11y;
-$bg: #FFF;
+$bg: #8C8C8C;
 
 // Run the a11y function
-$textA11y: a11ycolor( $text, $bg, 3.1 );
+$textA11y: a11ycolor( $text, $bg, 4.5 );
 
 body {
   background-color: $bg;
