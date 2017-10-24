@@ -23,7 +23,6 @@
 		$darker: $lightness - $i;
 		$colorDarker: hsl( $hue, $saturation, $darker );
 		$currentDarker: uikit-color-contrast( $colorDarker, $background );
-		@debug $currentDarker;
 		@if $currentDarker >= $ratio {
 			@return a11ycolor( $colorDarker, $background, $ratio, $i );
 		}
