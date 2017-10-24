@@ -1,66 +1,102 @@
 @import 'contrast-checker.scss';
 
-@function a11ycolor( $foreground, $background, $ratio, $i: 0 ){
+@function a11ycolor( $toMakeA11y, $background, $ratio ){
 
-	$currentRatio: uikit-color-contrast( $foreground, $background );
-
+	// Get the current ratio
+	$currentRatio: uikit-color-contrast( $toMakeA11y, $background );
+	
+	// If the ratio is not accessible check lighter/darker variations...
 	@if $currentRatio < $ratio {
 
-		$i: $i + .1;
+		// Get the HSL values and pass them into the function
+		$hue: hue( $toMakeA11y );
+		$saturation: saturation( $toMakeA11y );
+		$lightness: lightness( $toMakeA11y );
 		
-		$hue: hue($foreground);
-		$saturation: saturation($foreground);
-		$lightness: lightness($foreground);
+		@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio );
+	}
+	// Else return the accessible colour
+	@else {
+		@return $toMakeA11y;
+	}
 
-		
-		$lighter: $lightness + $i;
+}
+
+@function a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i: 0 ){
+	
+	$i: $i + .2;
+
+	// Increase the lightness by the iterable
+	$lighter: $lightness + $i;
+	$lighterNum: $lighter / ( $lighter * 0 + 1 );
+	@if $lighterNum < 100 {
 		$colorLighter: hsl( $hue, $saturation, $lighter );
 		$currentLighter: uikit-color-contrast( $colorLighter, $background );
 		@if $currentLighter >= $ratio {
-			@return a11ycolor( $colorLighter, $background, $ratio, $i );
+			@return $colorLighter;
 		}
+	}
 
-		$darker: $lightness - $i;
+	// Increase the darkness by iterable
+	$darker: $lightness - $i;
+	$darkerNum: $darker / ( $darker * 0 + 1 );
+	@if $darkerNum > 0 {
 		$colorDarker: hsl( $hue, $saturation, $darker );
 		$currentDarker: uikit-color-contrast( $colorDarker, $background );
 		@if $currentDarker >= $ratio {
-			@return a11ycolor( $colorDarker, $background, $ratio, $i );
+			@return $colorDarker;
 		}
+	}
 
-		@return a11ycolor( $foreground, $background, $ratio, $i );
-		
-	}
-	@else {
-		@return $foreground;
-	}
+	// No accessible colours found... try again..
+	@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i );
 }
 
 
 // Normal css
-$toMakeA11y: #B38300;
+$toMakeA11y: pink;
 $text: $toMakeA11y;
-$bg: #8C8C8C;
+$background: white;
 
 // Run the a11y function
-$textA11y: a11ycolor( $text, $bg, 4.5 );
+$textA11y: a11ycolor( $text, $background, 4.5 );
 
+
+
+// General page styles..
 body {
-  background-color: $bg;
-  text-align: center;
-  padding-top: 50px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	background-color: $background;
 }
 
-h1:first-of-type {
+.container {
+	max-width: 600px;
+	margin: 0 auto;
+  text-align: center;
+  padding-top: 50px;
+}
+
+h1 {
+	text-shadow: 1px 1px 0 #000;
+}
+
+.toMakeA11y h1 {
   color: $text;
   &:after {
     content: " " + $toMakeA11y;
   }
 }
 
-h1 {
+.a11y h1 {
   color: $textA11y;
   &:after {
     content: " " + $textA11y;
+  }
+}
+
+.background h1 {
+	color: $background;
+  &:after {
+    content: " " + $background;
   }
 }
