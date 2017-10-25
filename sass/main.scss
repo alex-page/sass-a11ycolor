@@ -24,12 +24,13 @@
 
 @function a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i: 0 ){
 	
-	$i: $i + .2;
+	$i: $i + 1;
 
 	// Increase the lightness by the iterable
 	$lighter: $lightness + $i;
 	$lighterNum: $lighter / ( $lighter * 0 + 1 );
 	@if $lighterNum < 100 {
+		@debug $lighterNum;
 		$colorLighter: hsl( $hue, $saturation, $lighter );
 		$currentLighter: uikit-color-contrast( $colorLighter, $background );
 		@if $currentLighter >= $ratio {
@@ -41,6 +42,7 @@
 	$darker: $lightness - $i;
 	$darkerNum: $darker / ( $darker * 0 + 1 );
 	@if $darkerNum > 0 {
+		@debug $darkerNum;
 		$colorDarker: hsl( $hue, $saturation, $darker );
 		$currentDarker: uikit-color-contrast( $colorDarker, $background );
 		@if $currentDarker >= $ratio {
@@ -54,7 +56,7 @@
 
 
 // Normal css
-$toMakeA11y: pink;
+$toMakeA11y: yellow;
 $text: $toMakeA11y;
 $background: white;
 
