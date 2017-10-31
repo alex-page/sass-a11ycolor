@@ -1,6 +1,6 @@
 @import 'contrast-checker.scss';
 
-@function a11ycolor( $toMakeA11y, $background, $ratio ){
+@function a11ycolor( $toMakeA11y, $background, $ratio ) {
 
 	// Get the current ratio
 	$currentRatio: uikit-color-contrast( $toMakeA11y, $background );
@@ -22,7 +22,7 @@
 
 }
 
-@function a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i: 0 ){
+@function a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i: 0 ) {
 	
 	$i: $i + 1;
 
@@ -41,6 +41,7 @@
 	// Increase the darkness by iterable
 	$darker: $lightness - $i;
 	$darkerNum: $darker / ( $darker * 0 + 1 );
+
 	@if $darkerNum > 0 {
 		@debug $darkerNum;
 		$colorDarker: hsl( $hue, $saturation, $darker );
@@ -74,8 +75,8 @@ body {
 .container {
 	max-width: 600px;
 	margin: 0 auto;
-  text-align: center;
-  padding-top: 50px;
+	text-align: center;
+	padding-top: 50px;
 }
 
 h1 {
@@ -83,22 +84,24 @@ h1 {
 }
 
 .toMakeA11y h1 {
-  color: $text;
-  &:after {
-    content: " " + $toMakeA11y;
-  }
+	color: $text;
+
+	&:after {
+		content: " " + $toMakeA11y;
+	}
 }
 
 .a11y h1 {
-  color: $textA11y;
-  &:after {
-    content: " " + $textA11y;
-  }
+	color: $textA11y;
+	&:after {
+		content: " " + $textA11y;
+	}
 }
 
 .background h1 {
 	color: $background;
-  &:after {
-    content: " " + $background;
-  }
+
+	&:after {
+		content: " " + $background;
+	}
 }
