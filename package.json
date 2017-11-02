@@ -19,6 +19,7 @@
 		"colour",
 		"color"
 	],
+	"main": "./dist/_index.scss",
 	"author": {
 		"name": "Alex Page",
 		"email": "alex@alexpage.com.au",
