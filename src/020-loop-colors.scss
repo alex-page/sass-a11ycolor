@@ -1,10 +1,21 @@
-@import 'contrast-checker.scss';
-
+/// The function to find the nearest accessible color
+///
+/// @param  {Color}  $name  Name of the module adding this dependency
+/// @param  {Color}  $name  Version of the module adding this dependency
+/// @param  {String} $name  Dependencies of this module
+///
+/// @example scss
+/// 	color: a11ycolor( red, blue, 4.5 );
+///
+///
+/// @group Main
+///
+/// @access public
 @function a11ycolor( $toMakeA11y, $background, $ratio ) {
 
 	// Get the current ratio
-	$currentRatio: uikit-color-contrast( $toMakeA11y, $background );
-	
+	$currentRatio: AU-color-contrast( $toMakeA11y, $background );
+
 	// If the ratio is not accessible check lighter/darker variations...
 	@if $currentRatio < $ratio {
 
@@ -12,7 +23,7 @@
 		$hue: hue( $toMakeA11y );
 		$saturation: saturation( $toMakeA11y );
 		$lightness: lightness( $toMakeA11y );
-		
+
 		@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio );
 	}
 	// Else return the accessible colour
@@ -22,17 +33,34 @@
 
 }
 
+
+/// The function to xxx
+///
+/// @param  {Color}  $hue         Hue
+/// @param  {Color}  $saturation  Saturation
+/// @param  {String} $lightness   Lightness
+/// @param  {String} $background  Background
+/// @param  {String} $ratio       Ration
+/// @param  {String} $i           I
+///
+/// @example scss
+/// 	a11ySpread( $hue, $saturation, $lightness, $background, $ratio );
+///
+///
+/// @group Main
+///
+/// @access public
 @function a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i: 0 ) {
-	
 	$i: $i + 1;
 
 	// Increase the lightness by the iterable
 	$lighter: $lightness + $i;
 	$lighterNum: $lighter / ( $lighter * 0 + 1 );
+
 	@if $lighterNum < 100 {
-		@debug $lighterNum;
 		$colorLighter: hsl( $hue, $saturation, $lighter );
-		$currentLighter: uikit-color-contrast( $colorLighter, $background );
+		$currentLighter: AU-color-contrast( $colorLighter, $background );
+
 		@if $currentLighter >= $ratio {
 			@return $colorLighter;
 		}
@@ -43,9 +71,9 @@
 	$darkerNum: $darker / ( $darker * 0 + 1 );
 
 	@if $darkerNum > 0 {
-		@debug $darkerNum;
 		$colorDarker: hsl( $hue, $saturation, $darker );
-		$currentDarker: uikit-color-contrast( $colorDarker, $background );
+		$currentDarker: AU-color-contrast( $colorDarker, $background );
+
 		@if $currentDarker >= $ratio {
 			@return $colorDarker;
 		}
@@ -53,55 +81,4 @@
 
 	// No accessible colours found... try again..
 	@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i );
-}
-
-
-// Normal css
-$toMakeA11y: yellow;
-$text: $toMakeA11y;
-$background: white;
-
-// Run the a11y function
-$textA11y: a11ycolor( $text, $background, 4.5 );
-
-
-
-// General page styles..
-body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	background-color: $background;
-}
-
-.container {
-	max-width: 600px;
-	margin: 0 auto;
-	text-align: center;
-	padding-top: 50px;
-}
-
-h1 {
-	text-shadow: 1px 1px 0 #000;
-}
-
-.toMakeA11y h1 {
-	color: $text;
-
-	&:after {
-		content: " " + $toMakeA11y;
-	}
-}
-
-.a11y h1 {
-	color: $textA11y;
-	&:after {
-		content: " " + $textA11y;
-	}
-}
-
-.background h1 {
-	color: $background;
-
-	&:after {
-		content: " " + $background;
-	}
 }

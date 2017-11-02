@@ -1,0 +1,203 @@
+/**
+ * Returns the factorial of a non-negative integer.
+ * https://github.com/terkel/mathsass
+ *
+ * @author Pascal Duez @pascalduez <http://pascalduez.me/>
+ *
+ * @param  {integer} $number - A non-negative integer.
+ *
+ * @return {integer}         - The factorial log
+ */
+ @function AU-factorial( $number ) {
+	@if $number < 0 or $number != floor( $number ) {
+		@error "You talking to me?; the AU-factorial function only takes positive numbers.";
+	}
+
+	$factorial: 1;
+
+	@while $number > 0 {
+		$factorial: $factorial * $number;
+		$number: $number - 1;
+	}
+
+	@return $factorial;
+}
+
+
+/**
+ * Returns base to the exponent power.
+ * https://github.com/terkel/mathsass
+ *
+ * @author Pascal Duez @pascalduez <http://pascalduez.me/>
+ *
+ * @param  {integers} $base     - The base number
+ * @param  {integers} $exponent - The exponent to which to raise base
+ *
+ * @return {integers}           - The result of the math
+ */
+@function AU-pow( $base, $exponent ) {
+	@if $exponent < 0 {
+		@error "I can see dead people; the AU-pow function only takes positive numbers as the second argument.";
+	}
+
+	// Constants
+	$LN2:   0.6931471805599453;
+	$SQRT2: 1.4142135623730951;
+
+	//full number
+	@if $exponent == floor( $exponent ) {
+		$rest: 1;
+
+		@if $exponent < 0 {
+			$exponent: $exponent * -1;
+		}
+
+		@while $exponent > 0 {
+			@if $exponent % 2 == 1 {
+				$rest: $rest * $base;
+			}
+
+			$exponent: floor($exponent * 0.5);
+			$base: $base * $base;
+		}
+
+		@return if( $exponent < 0, 1 / $rest, $rest );
+	}
+
+	//decimal number
+	@else {
+		@if $base <= 0 {
+			@return 0 / 0;
+		}
+
+		$normalized: ( $base / $SQRT2 );
+		$log: 0;
+
+		@if $normalized < 0 {
+			$normalized: $normalized * -1;
+		}
+
+		@if $normalized < 0.5 {
+			@while $normalized < 0.5 {
+				$normalized: $normalized * 2;
+				$log: $log - 1;
+			}
+		}
+
+		@else if $normalized >= 1 {
+			@while $normalized >= 1 {
+				$normalized: $normalized / 2;
+				$log: $log + 1;
+			}
+		}
+
+		$divider: 1;
+		$deviderExponent: $log;
+
+		$baseExponent: if( $deviderExponent >= 0, 2, 1 / 2 );
+
+		@if $deviderExponent < 0 {
+			$deviderExponent: $deviderExponent * -1;
+		}
+
+		@while $deviderExponent > 0 {
+			@if $deviderExponent % 2 == 1 {
+				$divider: $divider * $baseExponent;
+			}
+			$baseExponent: $baseExponent * $baseExponent;
+			$deviderExponent: floor( $deviderExponent * 0.5 );
+		}
+
+		$base: $base / $divider;
+		$base: ( $base - 1 ) / ( $base + 1 );
+		$base2: $base * $base;
+		$iterator: 1;
+		$tempBase: $base;
+		$tempBase2: null;
+
+		@while $tempBase2 != $tempBase {
+			$base: $base * $base2;
+			$iterator: $iterator + 2;
+			$tempBase2: $tempBase;
+			$tempBase: $tempBase + $base / $iterator;
+		}
+
+		$logarithm: ( $LN2 * $log + 2 * $tempBase ) * $exponent;
+		$return: 0;
+
+		@for $quarter from 0 to 24 {
+			$return: $return + AU-pow( $logarithm, $quarter ) / AU-factorial( $quarter );
+		}
+
+		@return $return;
+	}
+}
+
+
+/**
+ * Calculate color luminance
+ *
+ * https://github.com/voxpelli/sass-color-helpers/blob/master/stylesheets/color-helpers/_contrast.scss
+ * Adapted from: https://github.com/LeaVerou/contrast-ratio/blob/gh-pages/color.js
+ * Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+ *
+ * @author Pelle Wessman @voxpelli <http://kodfabrik.se/>
+ *
+ * @param  {string} $colour - The color to calculate the luminance from
+ *
+ * @return {float}          - The luminance
+ */
+@function AU-colour-luminance( $colour ) {
+	@if type-of( $colour ) != 'color' {
+		@error "Go ahead, make my day; the AU-colour-luminance function only takes a color!";
+	}
+
+	$rgba: red( $colour ), green( $colour ), blue( $colour );
+	$rgba2: ();
+
+	@for $i from 1 through 3 {
+		$rgb: nth( $rgba, $i );
+		$rgb: $rgb / 255;
+
+		$rgb: if( $rgb < .03928, $rgb / 12.92, AU-pow( ( $rgb + .055 ) / 1.055, 2.4 ) );
+
+		$rgba2: append( $rgba2, $rgb );
+	}
+
+	@return .2126 * nth( $rgba2, 1 ) + .7152 * nth( $rgba2, 2 ) + 0.0722 * nth( $rgba2, 3 );
+}
+
+
+/**
+ * Get the contrast ratio of two colors and warn when it is below WCAG 2.0 AA standard 4.5:1
+ *
+ * https://github.com/voxpelli/sass-color-helpers/blob/master/stylesheets/color-helpers/_contrast.scss
+ * Adapted from: https://github.com/LeaVerou/contrast-ratio/blob/gh-pages/color.js
+ * Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+ *
+ * @author Pelle Wessman @voxpelli <http://kodfabrik.se/>
+ *
+ * @param  {string}  $forground  - Color one
+ * @param  {string}  $background - Color two
+ *
+ * @return {integer}             - The contrast ratio
+ */
+@function AU-color-contrast( $forground, $background ) {
+	@if type-of( $forground ) != 'color' {
+		@error "Elementary, my dear Watson; the AU-color-contrast function only takes a color as first argument!";
+	}
+
+	@if type-of( $background ) != 'color' {
+		@error "You can’t handle the truth; the AU-color-contrast function only takes a color as second argument!";
+	}
+
+	$luminance1: AU-colour-luminance( $forground ) + .05;
+	$luminance2: AU-colour-luminance( $background ) + .05;
+	$ratio: $luminance1 / $luminance2;
+
+	@if $luminance2 > $luminance1 {
+		$ratio: 1 / $ratio;
+	}
+
+	@return $ratio;
+}

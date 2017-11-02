@@ -1,0 +1,6 @@
+// expected: #ffa3a3
+
+
+@import "../dist/index";
+
+@error( a11ycolor( red, blue, 4.5 ) );

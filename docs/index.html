@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Sass a11y color</title><link rel="stylesheet" href="assets/css/main.css"><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,700" rel="stylesheet" type="text/css"><meta name="viewport" content="width=device-width"><meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible"><!-- Open Graph tags --><meta property="og:title" content="Sass a11y color - SassDoc"><meta property="og:type" content="website"><meta property="og:description" content="<p>Generate the nearest accessible color with Sass.</p>
+"><!-- Thanks to Sass-lang.com for the icons --><link href="assets/images/favicon.png" rel="shortcut icon"></head><body><aside class="sidebar" role="nav"><div class="sidebar__header"><h1 class="sidebar__title"><a href="https://github.com/alex-page/sass-a11ycolor">Sass a11y color</a></h1></div><div class="sidebar__body"><button type="button" class="btn-toggle js-btn-toggle" data-alt="Open all">Close all</button><p class="sidebar__item sidebar__item--heading" data-slug="main"><a href="#main">Sass-a11ycolor</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="main-function"><a href="#main-function">functions</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-group="main" data-name="a11ycolor" data-type="function"><a href="#main-function-a11ycolor">a11ycolor</a></li><li class="sidebar__item sassdoc__item" data-group="main" data-name="a11ySpread" data-type="function"><a href="#main-function-a11ySpread">a11ySpread</a></li></ul></div></div></aside><article class="main" role="main"><header class="header" role="banner"><div class="container"><div class="sassdoc__searchbar searchbar"><label for="js-search-input" class="visually-hidden">Search</label><div class="searchbar__form" id="js-search"><input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search"><ul class="searchbar__suggestions" id="js-search-suggestions"></ul></div></div></div></header><section class="main__section"><h1 class="main__heading" id="main"><div class="container">Sass-a11ycolor</div></h1><section class="main__sub-section" id="main-function"><h2 class="main__heading--secondary"><div class="container">functions</div></h2><section class="main__item container item" id="main-function-a11ycolor"><h3 class="item__heading"><a class="item__name" href="#function-a11ycolor">a11ycolor</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function a11ycolor($name, $name, $name) { 
+
+	// Get the current ratio
+	$currentRatio: AU-color-contrast( $toMakeA11y, $background );
+
+	// If the ratio is not accessible check lighter/darker variations...
+	@if $currentRatio &lt; $ratio {
+
+		// Get the HSL values and pass them into the function
+		$hue: hue( $toMakeA11y );
+		$saturation: saturation( $toMakeA11y );
+		$lightness: lightness( $toMakeA11y );
+
+		@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio );
+	}
+	// Else return the accessible colour
+	@else {
+		@return $toMakeA11y;
+	}
+
+ }" data-collapsed="@function a11ycolor($name, $name, $name) { ... }"><code>@function a11ycolor($name, $name, $name) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>The function to find the nearest accessible color</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$name</code></th><td data-label="desc"><p>Name of the module adding this dependency</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$name</code></th><td data-label="desc"><p>Version of the module adding this dependency</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$name</code></th><td data-label="desc"><p>Dependencies of this module</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>color: a11ycolor( red, blue, 4.5 );
+</code></pre></div></section><section class="main__item container item" id="main-function-a11ySpread"><h3 class="item__heading"><a class="item__name" href="#function-a11ySpread">a11ySpread</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function a11ySpread($hue, $saturation, $lightness, $background, $ratio, $i) { 
+	$i: $i + 1;
+
+	// Increase the lightness by the iterable
+	$lighter: $lightness + $i;
+	$lighterNum: $lighter / ( $lighter * 0 + 1 );
+
+	@if $lighterNum &lt; 100 {
+		$colorLighter: hsl( $hue, $saturation, $lighter );
+		$currentLighter: AU-color-contrast( $colorLighter, $background );
+
+		@if $currentLighter &gt;= $ratio {
+			@return $colorLighter;
+		}
+	}
+
+	// Increase the darkness by iterable
+	$darker: $lightness - $i;
+	$darkerNum: $darker / ( $darker * 0 + 1 );
+
+	@if $darkerNum &gt; 0 {
+		$colorDarker: hsl( $hue, $saturation, $darker );
+		$currentDarker: AU-color-contrast( $colorDarker, $background );
+
+		@if $currentDarker &gt;= $ratio {
+			@return $colorDarker;
+		}
+	}
+
+	// No accessible colours found... try again..
+	@return a11ySpread( $hue, $saturation, $lightness, $background, $ratio, $i );
+ }" data-collapsed="@function a11ySpread($hue, $saturation, $lightness, $background, $ratio, $i) { ... }"><code>@function a11ySpread($hue, $saturation, $lightness, $background, $ratio, $i) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>The function to xxx</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$hue</code></th><td data-label="desc"><p>Hue</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$saturation</code></th><td data-label="desc"><p>Saturation</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$lightness</code></th><td data-label="desc"><p>Lightness</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$background</code></th><td data-label="desc"><p>Background</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$ratio</code></th><td data-label="desc"><p>Ration</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$i</code></th><td data-label="desc"><p>I</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>a11ySpread( $hue, $saturation, $lightness, $background, $ratio );
+</code></pre></div></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --> <a class="project-info__name" href="https://github.com/alex-page/sass-a11ycolor">Sass a11y color</a><!-- Version --><!-- License --></div><a class="footer__watermark" href="http://sassdoc.com"><img src="assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script src="assets/js/main.min.js"></script></body></html>
