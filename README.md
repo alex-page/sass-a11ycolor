@@ -1,3 +1,48 @@
-# Sass-A11yColor
+Sass-A11yColor
+==============
 
-Finds an accessible color.
+> Generate the nearest accessible color with Sass.
+
+
+## Install
+
+```shell
+$ npm install sass-a11ycolor
+```
+
+
+## Usage
+
+```scss
+@import node-modules/sass-a11ycolor/dist/index
+
+body {
+	color: AU-a11ycolor( red, blue );
+}
+```
+
+this will compile to:
+
+```css
+body {
+	color: #ffa3a3;
+}
+```
+
+
+## Parameters
+
+The function `AU-a11ycolor` takes three parameters:
+
+```scss
+AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
+```
+
+1. `$toMakeA11y` - The color that is to be changed
+1. `$background` - The background color to for the contrast
+1. `$ratioKey`   - The keyword 'small' or 'large' to set the WCAG 2.1 contrast ration or 3.0 or 4.5
+
+
+## Release History
+
+* v1.0.0 - First release
