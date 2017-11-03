@@ -1,0 +1,8 @@
+// expected: Where we’re going, we don’t need roads; the AU-a11ycolor function only takes a color as the first attribute!
+
+
+@import "../dist/index";
+
+@error(
+	AU-a11ycolor( wide, blue )              // first argument not a color
+);

@@ -1,0 +1,8 @@
+// expected: You shall not pass; the AU-a11ycolor function only takes a color as the second attribute!
+
+
+@import "../dist/index";
+
+@error(
+	AU-a11ycolor( green, 0 )                // second argument not a color
+);

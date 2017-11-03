@@ -206,6 +206,8 @@
 /// @param  {Color}           $toMakeA11y            The color that is to be changed
 /// @param  {Color}           $background            The background color to for the contrast
 /// @param  {'small'|'large'} $ratioKey   ['small']  The keyword 'small' or 'large' to set the WCAG 2.1 contrast ration or 3.0 or 4.5
+/// @param  {Number}          $steps      [0.1]      The step size our function is searching for a new color. The bigger the number the faster the process the
+///                                                  rougher the found color
 ///
 /// @example scss
 /// 	color: AU-a11ycolor( red, blue );        // returns: #ffa3a3
@@ -215,7 +217,7 @@
 /// @group Main
 ///
 /// @access public
-@function AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' ) {
+@function AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small', $steps: 0.1 ) {
 	@if type-of( $toMakeA11y ) != 'color' {
 		@error "Where we’re going, we don’t need roads; the AU-a11ycolor function only takes a color as the first attribute!";
 	}
@@ -226,6 +228,14 @@
 
 	@if $ratioKey != 'small' and $ratioKey != 'large' {
 		@error "I have always depended on the kindness of strangers; the AU-a11ycolor function only takes 'small' or 'large' as third attribute.";
+	}
+
+	@if type-of( $steps ) != 'number' {
+		@error "You’re tearing me apart, Lisa; the AU-a11ycolor function only takes a number as the forth attribute!";
+	}
+
+	@if $steps >= 100 {
+		@error "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number below 100 as the forth attribute!";
 	}
 
 	$ratios: (
@@ -253,7 +263,7 @@
 		$ratioLighter: AU-color-contrast( $colorLighter, $background ); // now we assign the new ratios; the loop will break
 		$ratioDarker:  AU-color-contrast( $colorDarker, $background );  // when one of these is beyond the defined ration
 
-		$i: $i + 1; // iterate by increasing our step
+		$i: $i + $steps; // iterate by increasing our step
 	}
 
 
