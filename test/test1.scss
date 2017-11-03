@@ -1,6 +1,12 @@
-// expected: #ffa3a3
+// expected: #ffa3a3 #00dc00 pink #4d4d4d #231284
 
 
 @import "../dist/index";
 
-@error( a11ycolor( red, blue, 4.5 ) );
+@error(
+	AU-a11ycolor( red, blue )
+	AU-a11ycolor( green, blue )
+	AU-a11ycolor( pink, blue )
+	AU-a11ycolor( #c0c0c0, #c0c0c0 )
+	AU-a11ycolor( #231284, #ccc )
+);
