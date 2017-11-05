@@ -1,0 +1,8 @@
+// expected: I have always depended on the kindness of strangers; the AU-a11ycolor function only takes 'small' or 'large' as third attribute.
+
+
+@import "../dist/index";
+
+@error(
+	AU-a11ycolor( pink, blue, big )         // third argument not on the list
+);

@@ -1,0 +1,76 @@
+/// The function to find the nearest accessible color
+///
+/// @param  {Color}           $toMakeA11y            The color that is to be changed
+/// @param  {Color}           $background            The background color to for the contrast
+/// @param  {'small'|'large'} $ratioKey   ['small']  The keyword 'small' or 'large' to set the WCAG 2.1 contrast ration or 3.0 or 4.5
+/// @param  {Number}          $steps      [0.1]      The step size our function is searching for a new color. The bigger the number the faster the process the
+///                                                  rougher the found color
+///
+/// @example scss
+/// 	color: AU-a11ycolor( red, blue );        // returns: #ffa3a3
+/// 	color: AU-a11ycolor( red, blue, large ); // returns: #ff6666
+///
+///
+/// @group Main
+///
+/// @access public
+@function AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small', $steps: 0.1 ) {
+	@if type-of( $toMakeA11y ) != 'color' {
+		@error "Where we’re going, we don’t need roads; the AU-a11ycolor function only takes a color as the first attribute!";
+	}
+
+	@if type-of( $background ) != 'color' {
+		@error "You shall not pass; the AU-a11ycolor function only takes a color as the second attribute!";
+	}
+
+	@if $ratioKey != 'small' and $ratioKey != 'large' {
+		@error "I have always depended on the kindness of strangers; the AU-a11ycolor function only takes 'small' or 'large' as third attribute.";
+	}
+
+	@if type-of( $steps ) != 'number' {
+		@error "You’re tearing me apart, Lisa; the AU-a11ycolor function only takes a number as the forth attribute!";
+	}
+
+	@if $steps >= 100 or $steps < 0.1 {
+		@error "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number between 0.1 and 100 as the forth attribute!";
+	}
+
+	$ratios: (
+		'large': 3,
+		'small': 4.5,
+	);
+	$ratio: map-get( $ratios, $ratioKey );
+
+	$currentRatio: AU-color-contrast( $toMakeA11y, $background ); // Get the current ratio
+	$colorLighter: $toMakeA11y;   // We have to scope those variables outside the loop
+	$ratioLighter: $currentRatio; // so that we have access to them after the loop finished
+	$colorDarker: $toMakeA11y;    // doing it for all of them
+	$ratioDarker: $currentRatio;  // just ever so slightly boring :)
+
+	$hue: hue( $toMakeA11y );               // Split the color into HSL
+	$saturation: saturation( $toMakeA11y ); // so we can make changes
+	$lightness:  lightness( $toMakeA11y );  // the only the lightness of the color
+
+
+	$i: 1;
+	@while $ratioLighter < $ratio and $ratioDarker < $ratio and $i < 101 {
+		$colorLighter: hsl( $hue, $saturation, ( $lightness + $i ) );   // then we lighten a new color
+		$colorDarker:  hsl( $hue, $saturation, ( $lightness - $i ) );   // and darken another
+
+		$ratioLighter: AU-color-contrast( $colorLighter, $background ); // now we assign the new ratios; the loop will break
+		$ratioDarker:  AU-color-contrast( $colorDarker, $background );  // when one of these is beyond the defined ration
+
+		$i: $i + $steps; // iterate by increasing our step
+	}
+
+
+	@if $ratioLighter >= $ratio {
+		@return $colorLighter;
+	}
+	@else if $ratioDarker >= $ratio {
+		@return $colorDarker;
+	}
+	@else {
+		@error 'Bagger; AU-a11ycolor was unable to find an accessible color for you.';
+	}
+}

@@ -1,0 +1,8 @@
+// expected: You’re tearing me apart, Lisa; the AU-a11ycolor function only takes a number as the forth attribute!
+
+
+@import "../dist/index";
+
+@error(
+	AU-a11ycolor( blue, blue, small, fast ) // forth argument not a number
+);
