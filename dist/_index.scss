@@ -234,8 +234,8 @@
 		@error "You’re tearing me apart, Lisa; the AU-a11ycolor function only takes a number as the forth attribute!";
 	}
 
-	@if $steps >= 100 {
-		@error "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number below 100 as the forth attribute!";
+	@if $steps >= 100 or $steps < 0.1 {
+		@error "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number between 0.1 and 100 as the forth attribute!";
 	}
 
 	$ratios: (
@@ -250,13 +250,13 @@
 	$colorDarker: $toMakeA11y;    // doing it for all of them
 	$ratioDarker: $currentRatio;  // just ever so slightly boring :)
 
+	$hue: hue( $toMakeA11y );               // Split the color into HSL
+	$saturation: saturation( $toMakeA11y ); // so we can make changes
+	$lightness:  lightness( $toMakeA11y );  // the only the lightness of the color
+
 
 	$i: 1;
 	@while $ratioLighter < $ratio and $ratioDarker < $ratio and $i < 101 {
-		$hue: hue( $toMakeA11y );                                       // Split the color into HSL
-		$saturation: saturation( $toMakeA11y );                         // so we can make changes
-		$lightness:  lightness( $toMakeA11y );                          // the only the lightness of the color
-
 		$colorLighter: hsl( $hue, $saturation, ( $lightness + $i ) );   // then we lighten a new color
 		$colorDarker:  hsl( $hue, $saturation, ( $lightness - $i ) );   // and darken another
 
