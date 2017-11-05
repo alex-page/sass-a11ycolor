@@ -1,0 +1,16 @@
+// expected: #ffa3a3 #00da00 pink #b5b5ff #4f4f4f #4d4d4d #3e3e3e #231284 #777777
+
+
+@import "../dist/index";
+
+@error(
+	AU-a11ycolor( red, blue )                   // #ffa3a3
+	AU-a11ycolor( green, blue )                 // #00da00
+	AU-a11ycolor( pink, blue )                  // pink
+	AU-a11ycolor( blue, blue )                  // #b5b5ff
+	AU-a11ycolor( #c0c0c0, #c0c0c0 )            // #4f4f4f
+	AU-a11ycolor( #c0c0c0, #c0c0c0, small, 1 )  // #4d4d4d
+	AU-a11ycolor( #c0c0c0, #c0c0c0, small, 50 ) // #3e3e3e
+	AU-a11ycolor( #231284, #ccc )               // #231284
+	AU-a11ycolor( #fff, #fff )                  // #777777
+);

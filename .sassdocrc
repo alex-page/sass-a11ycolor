@@ -1,0 +1,13 @@
+{
+	"package": {
+		"title": "Sass a11y color",
+		"name": "sass-a11ycolor",
+		"homepage": "https://github.com/alex-page/sass-a11ycolor",
+		"description": "Generate the nearest accessible color with Sass."
+	},
+	"groups": {
+		"main": "Sass-a11ycolor",
+	},
+	"autofill": "false",
+	"dest": "./docs"
+}

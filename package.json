@@ -1,54 +1,62 @@
 {
-  "name": "sass-a11ycolor",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "watch": "npm run watch:css | npm run watch:site",
-    "watch:site": "browser-sync start --server --files \"css/*.css\" \"*.html\"",
-    "watch:css": "node-sass -w --source-map true --output-style compressed sass/main.scss css/style.css",
-    "build": "node-sass --source-map true --output-style compressed sass/main.scss css/style.css"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alex-page/sass-a11ycolor.git"
-  },
-  "keywords": [
-    "sass",
-    "accessible",
-    "colour",
-    "color"
-  ],
-  "author": {
-    "name": "Commonwealth of Australia, DTA",
-    "email": "guides@digital.gov.au",
-    "url": "https://www.dta.gov.au/"
-  },
-  "contributors": [
-    {
-      "name": "Dominik Wilkowski",
-      "email": "hi@dominik-wilkowski.com",
-      "url": "https://dominik-wilkowski.com/"
-    },
-    {
-      "name": "Trevor Brennan",
-      "email": "t@trevorbrennan.com",
-      "url": "http://trevorbrennan.com/"
-    },
-    {
-      "name": "Alex Page",
-      "email": "alex@alexpage.com.au",
-      "url": "http://alexpage.com.au"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/alex-page/sass-a11ycolor/issues"
-  },
-  "homepage": "https://github.com/alex-page/sass-a11ycolor#readme",
-  "dependencies": {
-    "node-sass": "^4.5.3"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.18.13"
-  }
+	"name": "sass-a11ycolor",
+	"version": "1.0.0",
+	"description": "Generate the nearest accessible color with Sass.",
+	"scripts": {
+		"prepublish": "npm run build && npm run generate-doc && npm run test",
+		"build": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",
+		"generate-doc": "./node_modules/.bin/sassdoc ./dist/_index.scss docs --config=.sassdocrc && cfonts ' Documentation successfully generated' -f console -c candy",
+		"test": "npm run build && node ./test/_tester.js",
+		"watch": "watch 'npm run build && npm run generate-doc' ./src/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alex-page/sass-a11ycolor.git"
+	},
+	"keywords": [
+		"sass",
+		"accessible",
+		"colour",
+		"color"
+	],
+	"main": "./dist/_index.scss",
+	"author": {
+		"name": "Alex Page",
+		"email": "alex@alexpage.com.au",
+		"url": "http://alexpage.com.au"
+	},
+	"contributors": [
+		{
+			"name": "Dominik Wilkowski",
+			"email": "hi@dominik-wilkowski.com",
+			"url": "https://dominik-wilkowski.com/"
+		},
+		{
+			"name": "Trevor Brennan",
+			"email": "t@trevorbrennan.com",
+			"url": "http://trevorbrennan.com/"
+		},
+		{
+			"name": "Alex Page",
+			"email": "alex@alexpage.com.au",
+			"url": "http://alexpage.com.au"
+		}
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/alex-page/sass-a11ycolor/issues"
+	},
+	"eyeglass": {
+		"name": "sass-versioning",
+		"exports": false
+	},
+	"devDependencies": {
+		"cfonts": "^1.1.3",
+		"chalk": "^2.3.0",
+		"glob": "^7.1.2",
+		"node-sass": "^4.5.3",
+		"sassdoc": "^2.4.0",
+		"watch": "^1.0.2"
+	},
+	"dependencies": {}
 }

@@ -8,9 +8,9 @@
  *
  * @return {integer}         - The factorial log
  */
- @function uikit-factorial( $number ) {
+ @function AU-factorial( $number ) {
 	@if $number < 0 or $number != floor( $number ) {
-		@error "You talking to me?; the uikit-factorial function only takes positive numbers.";
+		@error "You talking to me?; the AU-factorial function only takes positive numbers.";
 	}
 
 	$factorial: 1;
@@ -35,9 +35,9 @@
  *
  * @return {integers}           - The result of the math
  */
-@function uikit-pow( $base, $exponent ) {
+@function AU-pow( $base, $exponent ) {
 	@if $exponent < 0 {
-		@error "I can see dead people; the uikit-pow function only takes positive numbers as the second argument.";
+		@error "I can see dead people; the AU-pow function only takes positive numbers as the second argument.";
 	}
 
 	// Constants
@@ -126,7 +126,7 @@
 		$return: 0;
 
 		@for $quarter from 0 to 24 {
-			$return: $return + uikit-pow( $logarithm, $quarter ) / uikit-factorial( $quarter );
+			$return: $return + AU-pow( $logarithm, $quarter ) / AU-factorial( $quarter );
 		}
 
 		@return $return;
@@ -147,9 +147,9 @@
  *
  * @return {float}          - The luminance
  */
-@function uikit-colour-luminance( $colour ) {
+@function AU-colour-luminance( $colour ) {
 	@if type-of( $colour ) != 'color' {
-		@error "Go ahead, make my day; the uikit-colour-luminance function only takes a color!";
+		@error "Go ahead, make my day; the AU-colour-luminance function only takes a color!";
 	}
 
 	$rgba: red( $colour ), green( $colour ), blue( $colour );
@@ -159,7 +159,7 @@
 		$rgb: nth( $rgba, $i );
 		$rgb: $rgb / 255;
 
-		$rgb: if( $rgb < .03928, $rgb / 12.92, uikit-pow( ( $rgb + .055 ) / 1.055, 2.4 ) );
+		$rgb: if( $rgb < .03928, $rgb / 12.92, AU-pow( ( $rgb + .055 ) / 1.055, 2.4 ) );
 
 		$rgba2: append( $rgba2, $rgb );
 	}
@@ -182,17 +182,17 @@
  *
  * @return {integer}             - The contrast ratio
  */
-@function uikit-color-contrast( $forground, $background ) {
+@function AU-color-contrast( $forground, $background ) {
 	@if type-of( $forground ) != 'color' {
-		@error "Elementary, my dear Watson; the uikit-color-contrast function only takes a color as first argument!";
+		@error "Elementary, my dear Watson; the AU-color-contrast function only takes a color as first argument!";
 	}
 
 	@if type-of( $background ) != 'color' {
-		@error "You can’t handle the truth; the uikit-color-contrast function only takes a color as second argument!";
+		@error "You can’t handle the truth; the AU-color-contrast function only takes a color as second argument!";
 	}
 
-	$luminance1: uikit-colour-luminance( $forground ) + .05;
-	$luminance2: uikit-colour-luminance( $background ) + .05;
+	$luminance1: AU-colour-luminance( $forground ) + .05;
+	$luminance2: AU-colour-luminance( $background ) + .05;
 	$ratio: $luminance1 / $luminance2;
 
 	@if $luminance2 > $luminance1 {
@@ -201,33 +201,3 @@
 
 	@return $ratio;
 }
-
-
-@mixin check-contrast( $ratio ) {
-  $result: "✔";
-  
-	@if( $ratio < 4.5 ) {
-		background-color: rgba( 255, 255, 0, 0.7 );
-		background-image: repeating-linear-gradient(
-			45deg, transparent,
-			transparent 5px,
-			rgba(255,255,255,.5) 5px,
-			rgba(255,255,255,.5) 10px
-		);
-		color: #000;
-
-		$result: "✗";
-		$returnRatio: $ratio;
-	}
-
-	@if( $ratio < 3 ) {
-		background-color: rgba( 255, 0, 0, 0.7 );
-		color: #fff;
-
-		$result: "✗";
-		$returnRatio: $ratio;
-	}
-
-	content: " (#{ $ratio } #{ $result })";
-}
-
