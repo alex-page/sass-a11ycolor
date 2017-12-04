@@ -1,4 +1,4 @@
-Sass-A11yColor
+🌈 Sass-A11yColor
 ==============
 
 > Generate the nearest accessible color with Sass.
