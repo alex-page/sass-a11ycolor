@@ -36,11 +36,13 @@
 		@error "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number between 0.1 and 100 as the forth attribute!";
 	}
 
+
 	$ratios: (
 		'large': 3,
 		'small': 4.5,
 	);
 	$ratio: map-get( $ratios, $ratioKey );
+
 
 	$currentRatio: AU-color-contrast( $toMakeA11y, $background ); // Get the current ratio
 	$colorLighter: $toMakeA11y;   // We have to scope those variables outside the loop
@@ -50,18 +52,22 @@
 
 	$hue: hue( $toMakeA11y );               // Split the color into HSL
 	$saturation: saturation( $toMakeA11y ); // so we can make changes
-	$lightness:  lightness( $toMakeA11y );  // the only the lightness of the color
+	$lightness: lightness( $toMakeA11y );   // the only the lightness of the color
 
 
-	$i: 1;
-	@while $ratioLighter < $ratio and $ratioDarker < $ratio and $i < 101 {
-		$colorLighter: hsl( $hue, $saturation, ( $lightness + $i ) );   // then we lighten a new color
-		$colorDarker:  hsl( $hue, $saturation, ( $lightness - $i ) );   // and darken another
+	$i: 0;
+	@while $ratioLighter < $ratio and $ratioDarker < $ratio and $i < 100 {
+		$i: $i + $steps;                                              // iterate by increasing our step
 
-		$ratioLighter: AU-color-contrast( $colorLighter, $background ); // now we assign the new ratios; the loop will break
-		$ratioDarker:  AU-color-contrast( $colorDarker, $background );  // when one of these is beyond the defined ration
+		$colorLighter: hsl( $hue, $saturation, $lightness + $i );     // then we lighten a new color
+		$colorDarker:  hsl( $hue, $saturation, $lightness - $i );     // and darken another
 
-		$i: $i + $steps; // iterate by increasing our step
+		// Reset the colors so it compares HEX not HSL
+		$resetLight: mix( $colorLighter, $colorLighter );
+		$resetDark:  mix( $colorDarker, $colorDarker );
+
+		$ratioLighter: AU-color-contrast( $resetLight, $background ); // now we assign the new ratios; the loop will break
+		$ratioDarker:  AU-color-contrast( $resetDark, $background );  // when one of these is beyond the defined ration
 	}
 
 
@@ -72,6 +78,6 @@
 		@return $colorDarker;
 	}
 	@else {
-		@error 'Bagger; AU-a11ycolor was unable to find an accessible color for you.';
+		@error 'Bagger; AU-color-a11y was unable to find an accessible color for you.';
 	}
 }

@@ -29,23 +29,27 @@
 	$currentRatio: AU-color-contrast( $toMakeA11y, $background ); // Get the current ratio
 	$colorLighter: $toMakeA11y;   // We have to scope those variables outside the loop
 	$ratioLighter: $currentRatio; // so that we have access to them after the loop finished
-	$colorDarker: $toMakeA11y;    // doing it for all of them
-	$ratioDarker: $currentRatio;  // just ever so slightly boring :)
+	$colorDarker:  $toMakeA11y;   // doing it for all of them
+	$ratioDarker:  $currentRatio; // just ever so slightly boring :)
 
-	$hue: hue( $toMakeA11y );               // Split the color into HSL
+	$hue:        hue( $toMakeA11y );        // Split the color into HSL
 	$saturation: saturation( $toMakeA11y ); // so we can make changes
 	$lightness:  lightness( $toMakeA11y );  // the only the lightness of the color
 
 
-	$i: 1;
-	@while $ratioLighter &lt; $ratio and $ratioDarker &lt; $ratio and $i &lt; 101 {
-		$colorLighter: hsl( $hue, $saturation, ( $lightness + $i ) );   // then we lighten a new color
-		$colorDarker:  hsl( $hue, $saturation, ( $lightness - $i ) );   // and darken another
-
-		$ratioLighter: AU-color-contrast( $colorLighter, $background ); // now we assign the new ratios; the loop will break
-		$ratioDarker:  AU-color-contrast( $colorDarker, $background );  // when one of these is beyond the defined ration
-
+	$i: 0;
+	@while $ratioLighter &lt; $ratio and $ratioDarker &lt; $ratio and $i &lt; 100 {
 		$i: $i + $steps; // iterate by increasing our step
+
+		$colorLighter: hsl( $hue, $saturation, $lightness + $i );       // then we lighten a new color
+		$colorDarker:  hsl( $hue, $saturation, $lightness - $i );       // and darken another
+
+		// Reset the colors so it compares HEX not HSL
+		$resetLighter: mix( $colorLighter, $colorLighter );
+		$resetDarker:  mix( $colorDarker, $colorDarker );
+
+		$ratioLighter: AU-color-contrast( $resetDarker, $background ); // now we assign the new ratios; the loop will break
+		$ratioDarker:  AU-color-contrast( $resetLighter, $background );  // when one of these is beyond the defined ration
 	}
 
 
