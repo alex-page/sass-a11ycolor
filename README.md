@@ -46,5 +46,6 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small', $steps: 0.1 );
 
 ## Release History
 
+* v1.0.2 - Stoping iteration if the color is accessible
 * v1.0.1 - Fixing issues with the a11ycolor function
 * v1.0.0 - First release

@@ -1,6 +1,6 @@
 {
 	"name": "sass-a11ycolor",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Generate the nearest accessible color with Sass.",
 	"scripts": {
 		"prepublish": "npm run build && npm run generate-doc && npm run test",
