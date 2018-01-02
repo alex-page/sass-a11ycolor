@@ -43,13 +43,13 @@
 	);
 	$ratio: map-get( $ratios, $ratioKey );
 
-
 	$currentRatio: AU-color-contrast( $toMakeA11y, $background ); // Get the current ratio
 
 	// Check if the color is accessible straight away
 	@if $currentRatio >= $ratio {
 		@return $toMakeA11y;
 	}
+
 
 	$colorLighter: $toMakeA11y;   // We have to scope those variables outside the loop
 	$ratioLighter: $currentRatio; // so that we have access to them after the loop finished
