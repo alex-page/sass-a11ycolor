@@ -1,4 +1,4 @@
-🌈 Sass-A11yColor
+🌈 Sass-A11yColor [![Build Status](https://travis-ci.org/alex-page/sass-a11ycolor.svg?branch=master)](https://travis-ci.org/alex-page/sass-a11ycolor)
 ==============
 
 > Generate the nearest accessible color with Sass.
