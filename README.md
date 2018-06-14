@@ -46,6 +46,7 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small', $steps: 0.1 );
 
 ## Release History
 
+* v1.1.0 - Moving to `sass` from `node-sass` for tests
 * v1.0.4 - Updating dependencies
 * v1.0.3 - While loop makes old code unecessary
 * v1.0.2 - Stoping iteration if the color is accessible
