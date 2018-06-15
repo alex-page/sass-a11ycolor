@@ -8,7 +8,7 @@
  **************************************************************************************************************************************************************/
 
 // dependencies
-const Sass = require('node-sass');
+const Sass = require('sass');
 const CFonts = require('cfonts');
 const Chalk = require(`chalk`);
 const Glob = require("glob");
@@ -51,12 +51,13 @@ Glob("./test/*.scss", ( error, files ) => {
 					allFiles++; // counting all files
 
 					if( error ) { // in case or error
-						if( fixtures[ file ] === error.message ) { // did we expect this error?
+						const message = error.message.split( '\n' )[ 0 ];
+						if( fixtures[ file ] === message ) { // did we expect this error?
 							console.log( Chalk.green(`✅  ${ file } passed`) );
 						}
 						else {
 							console.log( Chalk.red(`❎  ${ file } failed`) );
-							console.log(`  Output was:      ${ Chalk.yellow( error.message ) }`);
+							console.log(`  Output was:      ${ Chalk.yellow( message ) }`);
 							console.log(`  Should've been:  ${ Chalk.yellow( fixtures[ file ] ) }`);
 
 							success = false;
