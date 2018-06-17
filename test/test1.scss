@@ -1,4 +1,4 @@
-// expected: #ffa3a3 #636363 #00da00 pink #b5b5ff #4f4f4f #4d4d4d #414141 #231284 #767676
+// expected: #ffa3a3 #636363 #00da00 pink #b5b5ff #4f4f4f #231284 #767676
 
 
 @import "../dist/index";
@@ -10,8 +10,6 @@
 	AU-a11ycolor( pink,    blue )               // pink
 	AU-a11ycolor( blue,    blue )               // #b5b5ff
 	AU-a11ycolor( #c0c0c0, #c0c0c0 )            // #4f4f4f
-	AU-a11ycolor( #c0c0c0, #c0c0c0, small )     // #4d4d4d
-	AU-a11ycolor( #c0c0c0, #c0c0c0, small )     // #414141
 	AU-a11ycolor( #231284, #ccc )               // #231284
 	AU-a11ycolor( #fff,    #fff )               // #767676
 );

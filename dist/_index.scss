@@ -250,7 +250,15 @@
 	$maxLightness: 100;
 
 	// If our colour passes contrast on black
-	@if AU-color-contrast( #000, $background ) >= $ratio {
+	@if AU-color-contrast( hsl(
+		hue( $toMakeA11y ),
+		saturation( $toMakeA11y ),
+		$bgLightness
+	), $background ) >= $ratio {
+		$minLightness: $a11yLightness;
+		$maxLightness: $bgLightness;
+	}
+	@else if AU-color-contrast( #000, $background ) >= $ratio {
 		$maxLightness: if( $a11yLightness > $bgLightness, $bgLightness, $a11yLightness );
 	}
 	// It didn't pass on black
@@ -258,18 +266,22 @@
 		$minLightness: if( $a11yLightness > $bgLightness, $a11yLightness, $bgLightness );
 	}
 
-	$direction: $maxLightness == 100;
+	$direction: $minLightness != 0;
 	$foundColor: '';
 
 	// Binary search until we find the colour that meets contrast
 	@while( $foundColor == '' ) {
 		$midLightness: ( $minLightness + $maxLightness ) / 2;
-		$midColor: hsl( hue( $toMakeA11y ), saturation( $toMakeA11y ), $midLightness );
+		$midColor: hsl(
+			hue( $toMakeA11y ),
+			saturation( $toMakeA11y ),
+			$midLightness
+		);
 		$resetColor: mix( $midColor, $midColor );
 
 
 		// If we meet contrast
-		@if AU-color-contrast( $resetColor, $background ) > $ratio {
+		@if AU-color-contrast( $resetColor, $background ) >= $ratio {
 			// The colour is in the minimal lightness range for one hexadecimal
 			@if	$maxLightness - $minLightness < $minHexDiff {
 				$foundColor: $resetColor;
