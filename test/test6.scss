@@ -1,8 +1,0 @@
-// expected: "Toto, I’ve got a feeling we’re not in Kansas anymore; the AU-a11ycolor function only takes a number between 0.1 and 100 as the forth attribute!"
-
-
-@import "../dist/index";
-
-@error(
-	AU-a11ycolor( blue, blue, small, 101 ) // forth argument is too big
-);
