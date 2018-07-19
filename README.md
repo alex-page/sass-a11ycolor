@@ -32,7 +32,7 @@ body {
 
 ## Parameters
 
-The function `AU-a11ycolor` takes four parameters:
+The function `AU-a11ycolor` takes three parameters:
 
 ```scss
 AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
@@ -45,6 +45,7 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
 
 ## Release History
 
+* v2.0.1 - Updating docs, dependencies and spacing
 * v2.0.0 - Binary search, remove steps
 * v1.1.0 - Moving to `sass` from `node-sass` for tests
 * v1.0.4 - Updating dependencies
