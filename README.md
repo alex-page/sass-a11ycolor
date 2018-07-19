@@ -32,7 +32,7 @@ body {
 
 ## Parameters
 
-The function `AU-a11ycolor` takes four parameters:
+The function `AU-a11ycolor` takes three parameters:
 
 ```scss
 AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
