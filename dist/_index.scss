@@ -204,9 +204,9 @@
 /// The function to find the nearest accessible color
 ///
 /// @param  {Color}           $toMakeA11y            The color that is to be changed
-/// @param  {Color}           $background            The background color to for the contrast
-/// @param  {'small'|'large'} $ratioKey   ['small']  The keyword 'small' or 'large' to set the WCAG 2.1 contrast ration or 3.0 or 4.5
-///                                                  the rougher the found color.
+/// @param  {Color}           $background            The background color. Used to check the contrast ratio
+/// @param  {'small'|'large'} $ratioKey   ['small']  The keyword 'small' or 'large' to set the WCAG 2.1 contrast ratio to 3.0 (large) or 4.5 (small)
+///
 ///
 /// @example scss
 /// 	color: AU-a11ycolor( red, blue );                  // returns: #ffa3a3
@@ -244,29 +244,36 @@
 
 	// Ratio didn't pass so we need to find the nearest color
 	$a11yLightness: lightness( $toMakeA11y );
-	$bgLightness: lightness( $background );
-	$minHexDiff: 0.39215686274;
+	$minHexDiff: 100 / 255; // 255 Colors / 100% HSL
+
+	$isBlackBgContrast: AU-color-contrast( #000, $background ) >= $ratio;
+	$isWhiteBgContrast: AU-color-contrast( #fff, $background ) >= $ratio;
 	$minLightness: 0;
 	$maxLightness: 100;
+	$isDarkColor: false;
 
 	// If our colour passes contrast on black
-	@if AU-color-contrast( hsl(
-		hue( $toMakeA11y ),
-		saturation( $toMakeA11y ),
-		$bgLightness
-	), $background ) >= $ratio {
-		$minLightness: $a11yLightness;
-		$maxLightness: $bgLightness;
+	@if $isBlackBgContrast and $isWhiteBgContrast {
+		// Change the min lightness if the color is light
+		@if( $a11yLightness >= 50 ) {
+			$minLightness: $a11yLightness;
+		}
+		// Change the max lightness if the color is dark
+		@else {
+			$maxLightness: $a11yLightness;
+			$isDarkColor: true;
+		}
 	}
-	@else if AU-color-contrast( #000, $background ) >= $ratio {
-		$maxLightness: if( $a11yLightness > $bgLightness, $bgLightness, $a11yLightness );
+	@else if $isBlackBgContrast {
+		$maxLightness: $a11yLightness;
+		$isDarkColor: true;
 	}
 	// It didn't pass on black
 	@else {
-		$minLightness: if( $a11yLightness > $bgLightness, $a11yLightness, $bgLightness );
+		$minLightness: $a11yLightness;
 	}
 
-	$direction: $minLightness != 0;
+	// The color to return
 	$foundColor: '';
 
 	// Binary search until we find the colour that meets contrast
@@ -279,7 +286,6 @@
 		);
 		$resetColor: mix( $midColor, $midColor );
 
-
 		// If we meet contrast
 		@if AU-color-contrast( $resetColor, $background ) >= $ratio {
 			// The colour is in the minimal lightness range for one hexadecimal
@@ -287,19 +293,19 @@
 				$foundColor: $resetColor;
 			}
 
-			@if $direction {
-				$maxLightness: $midLightness;
+			@if $isDarkColor {
+				$minLightness: $midLightness;
 			}
 			@else {
-				$minLightness: $midLightness;
+				$maxLightness: $midLightness;
 			}
 		}
 		// We don't meet contrast
-		@else if( $direction ) {
-			$minLightness: $midLightness;
+		@else if $isDarkColor {
+			$maxLightness: $midLightness;
 		}
 		@else {
-			$maxLightness: $midLightness;
+			$minLightness: $midLightness;
 		}
 	}
 

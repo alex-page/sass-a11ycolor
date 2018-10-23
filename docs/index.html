@@ -26,29 +26,36 @@
 
 	// Ratio didn&#39;t pass so we need to find the nearest color
 	$a11yLightness: lightness( $toMakeA11y );
-	$bgLightness: lightness( $background );
-	$minHexDiff: 0.39215686274;
+	$minHexDiff: 100 / 255; // 255 Colors / 100% HSL
+
+	$isBlackBgContrast: AU-color-contrast( #000, $background ) &gt;= $ratio;
+	$isWhiteBgContrast: AU-color-contrast( #fff, $background ) &gt;= $ratio;
 	$minLightness: 0;
 	$maxLightness: 100;
+	$isDarkColor: false;
 
 	// If our colour passes contrast on black
-	@if AU-color-contrast( hsl(
-		hue( $toMakeA11y ),
-		saturation( $toMakeA11y ),
-		$bgLightness
-	), $background ) &gt;= $ratio {
-		$minLightness: $a11yLightness;
-		$maxLightness: $bgLightness;
+	@if $isBlackBgContrast and $isWhiteBgContrast {
+		// Change the min lightness if the color is light
+		@if( $a11yLightness &gt;= 50 ) {
+			$minLightness: $a11yLightness;
+		}
+		// Change the max lightness if the color is dark
+		@else {
+			$maxLightness: $a11yLightness;
+			$isDarkColor: true;
+		}
 	}
-	@else if AU-color-contrast( #000, $background ) &gt;= $ratio {
-		$maxLightness: if( $a11yLightness &gt; $bgLightness, $bgLightness, $a11yLightness );
+	@else if $isBlackBgContrast {
+		$maxLightness: $a11yLightness;
+		$isDarkColor: true;
 	}
 	// It didn&#39;t pass on black
 	@else {
-		$minLightness: if( $a11yLightness &gt; $bgLightness, $a11yLightness, $bgLightness );
+		$minLightness: $a11yLightness;
 	}
 
-	$direction: $minLightness != 0;
+	// The color to return
 	$foundColor: &#39;&#39;;
 
 	// Binary search until we find the colour that meets contrast
@@ -61,7 +68,6 @@
 		);
 		$resetColor: mix( $midColor, $midColor );
 
-
 		// If we meet contrast
 		@if AU-color-contrast( $resetColor, $background ) &gt;= $ratio {
 			// The colour is in the minimal lightness range for one hexadecimal
@@ -69,24 +75,24 @@
 				$foundColor: $resetColor;
 			}
 
-			@if $direction {
-				$maxLightness: $midLightness;
+			@if $isDarkColor {
+				$minLightness: $midLightness;
 			}
 			@else {
-				$minLightness: $midLightness;
+				$maxLightness: $midLightness;
 			}
 		}
 		// We don&#39;t meet contrast
-		@else if( $direction ) {
-			$minLightness: $midLightness;
+		@else if $isDarkColor {
+			$maxLightness: $midLightness;
 		}
 		@else {
-			$maxLightness: $midLightness;
+			$minLightness: $midLightness;
 		}
 	}
 
 	@return $foundColor;
- }" data-collapsed="@function AU-a11ycolor($toMakeA11y, $background, $ratioKey: &#39;small&#39;) { ... }"><code>@function AU-a11ycolor($toMakeA11y, $background, $ratioKey: &#39;small&#39;) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>The function to find the nearest accessible color</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$toMakeA11y</code></th><td data-label="desc"><p>The color that is to be changed</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$background</code></th><td data-label="desc"><p>The background color to for the contrast</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$ratioKey</code></th><td data-label="desc"><p>The keyword &#39;small&#39; or &#39;large&#39; to set the WCAG 2.1 contrast ration or 3.0 or 4.5 the rougher the found color.</p></td><td data-label="type"><code>'small'</code> or <code>'large'</code></td><td data-label="default"><code>&#39;small&#39;</code></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>color: AU-a11ycolor( red, blue );                  // returns: #ffa3a3
+ }" data-collapsed="@function AU-a11ycolor($toMakeA11y, $background, $ratioKey: &#39;small&#39;) { ... }"><code>@function AU-a11ycolor($toMakeA11y, $background, $ratioKey: &#39;small&#39;) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>The function to find the nearest accessible color</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$toMakeA11y</code></th><td data-label="desc"><p>The color that is to be changed</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$background</code></th><td data-label="desc"><p>The background color. Used to check the contrast ratio</p></td><td data-label="type"><code>Color</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$ratioKey</code></th><td data-label="desc"><p>The keyword &#39;small&#39; or &#39;large&#39; to set the WCAG 2.1 contrast ratio to 3.0 (large) or 4.5 (small)</p></td><td data-label="type"><code>'small'</code> or <code>'large'</code></td><td data-label="default"><code>&#39;small&#39;</code></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>color: AU-a11ycolor( red, blue );                  // returns: #ffa3a3
 color: AU-a11ycolor( red, blue, large );           // returns: #ff6666
 color: AU-a11ycolor( #c0c0c0, #c0c0c0, small, 1 ); // returns: #4d4d4d
 </code></pre></div></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --> <a class="project-info__name" href="https://github.com/alex-page/sass-a11ycolor">Sass a11y color</a><!-- Version --><!-- License --></div><a class="footer__watermark" href="http://sassdoc.com"><img src="assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script src="assets/js/main.min.js"></script></body></html>

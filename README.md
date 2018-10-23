@@ -39,13 +39,13 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
 ```
 
 1. `$toMakeA11y` - The color that is to be changed
-1. `$background` - The background color to for the contrast
-1. `$ratioKey`   - The keyword 'small' or 'large' to set the WCAG 2.1 contrast ration or 3.0 or 4.5
+1. `$background` - The background color. Used to check the contrast ratio
+1. `$ratioKey`   - The keyword 'small' or 'large' to set the WCAG 2.1 contrast ratio to 3.0 (large) or 4.5 (small)
 
 
 ## Release History
 
-* v2.0.1 - Updating docs, dependencies and spacing
+* v2.0.1 - Fixing issue when a color passes on white and black, update docs, dependencies and spacing
 * v2.0.0 - Binary search, remove steps
 * v1.1.0 - Moving to `sass` from `node-sass` for tests
 * v1.0.4 - Updating dependencies
