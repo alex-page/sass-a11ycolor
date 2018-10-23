@@ -8,7 +8,7 @@
  **************************************************************************************************************************************************************/
 
 // dependencies
-const Sass = require( "sass" );
+const Sass = require( "node-sass" );
 const CFonts = require( "cfonts" );
 const Chalk = require( "chalk" );
 const Glob = require( "glob" );
