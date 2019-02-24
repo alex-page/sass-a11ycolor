@@ -9,7 +9,6 @@
 
 // dependencies
 const Sass = require( "node-sass" );
-const CFonts = require( "cfonts" );
 const Chalk = require( "chalk" );
 const Glob = require( "glob" );
 const Fs = require( "fs" );
@@ -20,14 +19,6 @@ let fixtures = {};  // object to add fixtures to each file
 let success = true; // let's assume the best
 let allFiles = 0;   // let's count all files so we can run something after the last file
 const startTime = process.hrtime();
-const cfontsConf = {
-	font: "chrome",
-	colors: [ "green", "white", "cyan" ],
-};
-
-
-// some cli prettiness
-CFonts.say( "testing...", cfontsConf );
 
 
 // let's iterate over all test files
@@ -77,9 +68,6 @@ Glob( "./test/*.scss", ( error, files ) => {
 					}
 
 					if( allFiles >= files.length ) { // after we finished with all files
-						// some more cli prettiness
-						CFonts.say( "...done", cfontsConf );
-
 						const elapsedTime = process.hrtime( startTime );
 						console.log( `Test took: ${ ( elapsedTime[ 0 ] + ( elapsedTime[ 1 ] / 1e9 ) ).toFixed( 3 ) }s` );
 
