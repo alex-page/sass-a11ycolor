@@ -7,7 +7,7 @@
 ## Install
 
 ```shell
-$ npm install sass-a11ycolor
+npm install sass-a11ycolor
 ```
 
 
@@ -17,7 +17,7 @@ $ npm install sass-a11ycolor
 @import node-modules/sass-a11ycolor/dist/index
 
 body {
-	color: AU-a11ycolor( red, blue );
+  color: AU-a11ycolor( red, blue );
 }
 ```
 
@@ -25,7 +25,7 @@ this will compile to:
 
 ```css
 body {
-	color: #ffa3a3;
+  color: #ffa3a3;
 }
 ```
 
