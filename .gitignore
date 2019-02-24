@@ -11,4 +11,3 @@ validation-status.json
 npm-debug.log
 lerna-debug.log
 dist
-docs/*
