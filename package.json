@@ -1,13 +1,14 @@
 {
 	"name": "sass-a11ycolor",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Generate the nearest accessible color with Sass.",
 	"scripts": {
-		"prepublish": "npm run build && npm run generate-doc && npm run test",
-		"build": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",
-		"generate-doc": "./node_modules/.bin/sassdoc ./dist/_index.scss docs --config=.sassdocrc && cfonts ' Documentation successfully generated' -f console -c candy",
-		"test": "npm run build && node ./test/_tester.js",
-		"watch": "watch 'npm run build && npm run generate-doc' ./src/"
+		"prepublishOnly": "npm run build && npm run test",
+		"build:sass": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",
+		"build:docs": "./node_modules/.bin/sassdoc ./dist/_index.scss docs --config=.sassdocrc",
+		"build": "npm run build:sass && npm run build:docs",
+		"test": "node ./test/_tester.js",
+		"watch": "watch 'npm run build' ./src/"
 	},
 	"repository": {
 		"type": "git",
@@ -51,7 +52,6 @@
 		"exports": false
 	},
 	"devDependencies": {
-		"cfonts": "^1.1.3",
 		"chalk": "^2.3.0",
 		"glob": "^7.1.2",
 		"node-sass": "^4.9.4",

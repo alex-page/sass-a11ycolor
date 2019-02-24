@@ -1,4 +1,4 @@
-🌈 Sass-A11yColor [![Build Status](https://travis-ci.org/alex-page/sass-a11ycolor.svg?branch=master)](https://travis-ci.org/alex-page/sass-a11ycolor)
+🌈 Sass-A11yColor
 ==============
 
 > Generate the nearest accessible color with Sass.
@@ -45,6 +45,7 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
 
 ## Release History
 
+* v2.0.3 - Replace travis with GitHub actions
 * v2.0.2 - Update dependencies
 * v2.0.1 - Fixing issue when a color passes on white and black, update docs, dependencies and spacing
 * v2.0.0 - Binary search, remove steps

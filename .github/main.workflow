@@ -8,10 +8,16 @@ action "Install dependencies" {
   args = "install"
 }
 
+action "Build" {
+  uses = "actions/npm@master"
+  args = "run build"
+  needs = ["Install dependencies"]
+}
+
 action "Test" {
   uses = "actions/npm@master"
   args = "run test"
-  needs = ["Install dependencies"]
+  needs = ["Build"]
 }
 
 action "Master branch only" {
