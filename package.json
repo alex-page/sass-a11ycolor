@@ -1,9 +1,8 @@
 {
 	"name": "sass-a11ycolor",
-	"version": "2.0.4",
+	"version": "2.0.5",
 	"description": "Generate the nearest accessible color with Sass.",
 	"scripts": {
-		"prepublishOnly": "npm run build && npm run test",
 		"build:sass": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",
 		"build:docs": "./node_modules/.bin/sassdoc ./dist/_index.scss docs --config=.sassdocrc",
 		"build": "npm run build:sass && npm run build:docs",

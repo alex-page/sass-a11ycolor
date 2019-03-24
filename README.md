@@ -45,6 +45,7 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
 
 ## Release History
 
+* v2.0.5 - Remove `prePublishonly` npm script
 * v2.0.4 - Remove .github directory from NPM
 * v2.0.3 - Replace travis with GitHub actions
 * v2.0.2 - Update dependencies
