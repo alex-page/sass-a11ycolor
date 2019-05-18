@@ -1,6 +1,6 @@
 {
 	"name": "sass-a11ycolor",
-	"version": "2.0.5",
+	"version": "2.0.7",
 	"description": "Generate the nearest accessible color with Sass.",
 	"scripts": {
 		"build:sass": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",
@@ -20,7 +20,9 @@
 		"color"
 	],
 	"main": "dist",
-	"files": [ "dist" ],
+	"files": [
+		"dist"
+	],
 	"author": {
 		"name": "Alex Page",
 		"email": "alex@alexpage.com.au",
@@ -55,7 +57,7 @@
 		"chalk": "^2.3.0",
 		"glob": "^7.1.2",
 		"node-sass": "^4.9.4",
-		"sassdoc": "^2.5.1",
+		"sassdoc": "^2.7.0",
 		"watch": "^1.0.2"
 	},
 	"dependencies": {}
