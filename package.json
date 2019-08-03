@@ -1,6 +1,6 @@
 {
 	"name": "sass-a11ycolor",
-	"version": "2.0.7",
+	"version": "2.0.8",
 	"description": "Generate the nearest accessible color with Sass.",
 	"scripts": {
 		"build:sass": "rm -rf ./dist/ && mkdir ./dist/ && cat ./src/* > dist/_index.scss",

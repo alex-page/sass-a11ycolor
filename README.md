@@ -45,6 +45,7 @@ AU-a11ycolor( $toMakeA11y, $background, $ratioKey: 'small' );
 
 ## Release History
 
+* v2.0.8 - Update dependencies
 * v2.0.7 - Update dependencies
 * v2.0.6 - Use files instead of `.npmignore`
 * v2.0.5 - Remove `prePublishonly` npm script
